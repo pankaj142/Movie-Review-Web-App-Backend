@@ -5,6 +5,7 @@ const db = require("../db/db");
 
 //get all Reviews items
 router.get('/', (req,res, next)=>{
+    console.log("get reviews")
     Reviews.find()
         .then(function(success){
             res.json({
@@ -31,6 +32,17 @@ router.get('/', (req,res, next)=>{
 
 //add new Reviews item
 router.post('/', (req,res, next)=>{
+    console.log("post review api", req.body)
+    if(req.body.movie_name == "" || req.body.review == ""){
+        res.json({
+            success : false,
+            error : {
+                "message" : "Compalsary fields are missing.",
+            },
+            data : {}
+        })
+        return false;
+    }
     let new_Reviews = new Reviews({
         movie_name : req.body.movie_name,
         review : req.body.review,
@@ -41,8 +53,6 @@ router.post('/', (req,res, next)=>{
                 success : false,
                 error : {
                     "message" : "Could not add the Reviews item.",
-                    "Reviews" : Reviews,
-                    "err" : err
                 },
                 data : {}
             })
@@ -60,8 +70,9 @@ router.post('/', (req,res, next)=>{
     })
 })
 
-router.delete('/:id', (req,res, next)=>{
-    Reviews.remove({_id : req.params.id}, (err, result)=>{
+router.delete('/:movie_name', (req,res, next)=>{
+    console.log("delete review api", req.params.movie_name)
+    Reviews.remove({movie_name : req.params.movie_name}, (err, result)=>{
         if(err){
             res.json({
                 success : false,
@@ -84,5 +95,42 @@ router.delete('/:id', (req,res, next)=>{
     })
 })
 
+//add new Reviews item
+router.post('/update', (req,res, next)=>{
+    console.log("post review api", req.body)
+    if(req.body.movie_name == "" || req.body.review == ""){
+        res.json({
+            success : false,
+            error : {
+                "message" : "Compalsary fields are missing.",
+            },
+            data : {}
+        })
+        return false;
+    }
+    let query = {movie_name : req.body.movie_name};
+    let update = {$set:{review:req.body.review}};
+    Reviews.findOneAndUpdate(query, update, (err)=>{
+        if(err){
+            res.json({
+                success : false,
+                error : {
+                    "message" : "Could not update the review",
+                },
+                data : {}
+            })
+            return false;
+        }else{
+            res.json({
+                success : true,
+                data : {
+                    "message" : "Reviews udpated successfully"
+                },
+                error : {}
+            })
+            return false;
+        }
+    })
+})
 
 module.exports = router;
