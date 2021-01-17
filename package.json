@@ -1,0 +1,28 @@
+{
+  "name": "moview_review_node_server",
+  "version": "1.0.0",
+  "description": "This is nodejs expressjs server. This is to demonstrate simple CRUD operations in MEEN stack app.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev-start" : "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "pankaj142"
+  },
+  "keywords": [
+    "nodejs",
+    "expressjs",
+    "mongodb"
+  ],
+  "author": "pankaj agham",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.8",
+    "nodemon": "^2.0.6"
+  }
+}
